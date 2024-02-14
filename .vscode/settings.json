@@ -1,0 +1,8 @@
+{
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit"
+	},
+	"eslint.alwaysShowStatus": true,
+	"editor.stickyScroll.enabled": true,
+	"workbench.tree.enableStickyScroll": true
+}
