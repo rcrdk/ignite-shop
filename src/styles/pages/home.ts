@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import { styled } from '..'
 
 export const HomeContainer = styled('main', {
@@ -5,11 +7,12 @@ export const HomeContainer = styled('main', {
 	// gap: '3rem',
 	width: '100%',
 	maxWidth: 'calc(100vw - ((100vw - 1180px) / 2))',
-	minHeight: 656,
+	minHeight: 520,
 	marginLeft: 'auto',
+	borderRadius: '8px 0 0 8px',
 })
 
-export const Product = styled('a', {
+export const Product = styled(Link, {
 	background: 'linear-gradient(180deg, #1ea843 0%, #7465d4 100%)',
 	borderRadius: 8,
 	cursor: 'pointer',
@@ -30,18 +33,21 @@ export const Product = styled('a', {
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		background: 'rgb(0 0 0 / 60%)',
-		padding: '2rem',
+		background: 'rgb(0 0 0 / 75%)',
+		padding: '1.75rem 2rem',
 		transform: 'translateY(110%)',
 		opacity: 0,
 		transition: 'all 200ms ease-in-out',
+		// backdropFilter: 'blur(3px)',
 
 		strong: {
-			fontSize: '$lg',
+			fontSize: '$md',
+			textWrap: 'pretty',
+			color: '$gray100',
 		},
 
 		span: {
-			fontSize: '$xl',
+			fontSize: '$lg',
 			fontWeight: 'bold',
 			color: '$green500',
 		},
