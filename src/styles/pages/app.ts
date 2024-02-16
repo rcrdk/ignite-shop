@@ -6,12 +6,12 @@ export const Container = styled('div', {
 	alignItems: 'flex-start',
 	minHeight: '100vh',
 	justifyContent: 'center',
-	paddingBottom: '3rem',
+	padding: '0 0 3rem',
 })
 
 export const Header = styled('header', {
 	padding: '2rem 0',
-	width: '100%',
-	maxWidth: 1180,
+	width: 1180,
+	maxWidth: 'calc(100% - 4rem)',
 	margin: '0 auto',
 })
