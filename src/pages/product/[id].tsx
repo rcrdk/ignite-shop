@@ -19,6 +19,8 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
+	const router = useRouter()
+
 	const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
 		useState(false)
 
@@ -27,7 +29,7 @@ export default function Product({ product }: ProductProps) {
 			setIsCreatingCheckoutSession(true)
 
 			const response = await axios.post('/api/checkout', {
-				priceID: product.defaultPriceId,
+				priceID: product?.defaultPriceId,
 			})
 
 			const { checkoutURL } = response.data
@@ -40,9 +42,7 @@ export default function Product({ product }: ProductProps) {
 		}
 	}
 
-	const { isFallback } = useRouter()
-
-	if (isFallback) {
+	if (router.isFallback) {
 		return (
 			<ProductContainer>
 				<ImageContainer className="skeleton" />
@@ -81,7 +81,7 @@ export default function Product({ product }: ProductProps) {
 						onClick={handleBuyProduct}
 						disabled={isCreatingCheckoutSession}
 					>
-						Comprar agora
+						Colocar na sacola
 					</button>
 				</ProductDetails>
 			</ProductContainer>
@@ -92,7 +92,7 @@ export default function Product({ product }: ProductProps) {
 export const getStaticPaths: GetStaticPaths = async () => {
 	return {
 		paths: [{ params: { id: 'prod_PYp9pNDKgyFzXB' } }],
-		fallback: true,
+		fallback: 'blocking',
 	}
 }
 
@@ -100,11 +100,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
 	params,
 }) => {
+	let product = null
 	const productId = params?.id || ''
 
-	const product = await stripe.products.retrieve(productId, {
-		expand: ['default_price'],
-	})
+	try {
+		product = await stripe.products.retrieve(productId, {
+			expand: ['default_price'],
+		})
+	} catch (error) {
+		console.error(error)
+	}
+
+	if (!product) {
+		return {
+			notFound: true,
+		}
+	}
 
 	const price = product.default_price as Stripe.Price
 	const priceConverted = (price.unit_amount || 0) / 100

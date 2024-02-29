@@ -1,10 +1,13 @@
-import 'keen-slider/keen-slider.min.css'
+import 'swiper/css'
+import 'swiper/css/scrollbar'
 
-import { useKeenSlider } from 'keen-slider/react'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { Bag } from 'phosphor-react'
 import Stripe from 'stripe'
+import { Mousewheel, Scrollbar } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 import { Product as ProductType } from '@/@types/product'
 import { stripe } from '@/lib/stripe'
@@ -15,35 +18,39 @@ interface HomeProps {
 }
 
 export default function Home({ products }: HomeProps) {
-	const [sliderRef] = useKeenSlider({
-		slides: {
-			perView: 3,
-			spacing: 48,
-		},
-	})
-
 	return (
 		<>
 			<Head>
 				<title>Ignite Shop</title>
 			</Head>
 
-			<HomeContainer ref={sliderRef} className="keen-slider">
-				{products.map((product) => (
-					<Product
-						href={`/product/${product.id}`}
-						className="keen-slider__slide"
-						key={product.id}
-						prefetch={false}
-					>
-						<Image src={product.imageUrl} alt="" width={520} height={520} />
+			<HomeContainer>
+				<Swiper
+					modules={[Scrollbar, Mousewheel]}
+					slidesPerView="auto"
+					spaceBetween={20}
+					threshold={5}
+					scrollbar={{ draggable: true }}
+					mousewheel={{ forceToAxis: true }}
+					breakpoints={{ 480: { spaceBetween: 30 }, 576: { spaceBetween: 45 } }}
+				>
+					{products.map((product) => (
+						<SwiperSlide key={product.id}>
+							<Product href={`/product/${product.id}`} prefetch={false}>
+								<Image src={product.imageUrl} alt="" width={520} height={520} />
 
-						<footer>
-							<strong>{product.name}</strong>
-							<span>{product.price}</span>
-						</footer>
-					</Product>
-				))}
+								<footer>
+									<div>
+										<strong>{product.name}</strong>
+										<span>{product.price}</span>
+									</div>
+
+									<Bag weight="bold" />
+								</footer>
+							</Product>
+						</SwiperSlide>
+					))}
+				</Swiper>
 			</HomeContainer>
 		</>
 	)
