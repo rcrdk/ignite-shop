@@ -8,6 +8,7 @@ import { useShoppingCart } from 'use-shopping-cart'
 
 import { Product, ProductCart } from '@/@types/product'
 import { stripe } from '@/lib/stripe'
+import { ButtonContainer } from '@/styles/components/button'
 import {
 	ImageContainer,
 	ProductButton,
@@ -103,13 +104,13 @@ export default function Product({ product, productCart }: ProductProps) {
 							<small>Quantidade máxima de itens na sacola atingido.</small>
 						)}
 
-						<button
+						<ButtonContainer
 							type="button"
 							onClick={handleAddProductToCart}
 							disabled={isAddingProductToCart || hasLimitCartItems}
 						>
 							Adicionar à sacola
-						</button>
+						</ButtonContainer>
 					</ProductButton>
 				</ProductDetails>
 			</ProductContainer>

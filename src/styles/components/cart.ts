@@ -28,6 +28,7 @@ export const CartContent = styled(Content, {
 	maxWidth: '81vw',
 	background: '$gray700',
 	overflow: 'auto',
+	boxShadow: '0 0 8rem rgb(0 0 0 / 66%)',
 	// animation: 'contentShow 500ms cubic-bezier(0.16, 1, 0.3, 1);',
 })
 
@@ -66,11 +67,31 @@ export const CartFooter = styled('footer', {
 	position: 'sticky',
 	bottom: 0,
 	padding: '1.5rem',
+	display: 'flex',
+	flexDirection: 'column',
+	gap: '1rem',
+
+	'&[hidden]': {
+		display: 'none',
+	},
 
 	p: {
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'space-between',
+
+		'&:nth-last-child(2)': {
+			fontWeight: 'bold',
+			fontSize: '$md',
+
+			'span:last-child': {
+				fontSize: '$lg',
+			},
+		},
+	},
+
+	button: {
+		marginTop: '1.5rem',
 	},
 })
 

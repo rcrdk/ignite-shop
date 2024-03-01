@@ -1,9 +1,10 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import Image from 'next/image'
 import { X } from 'phosphor-react'
 import { ReactNode, useEffect, useState } from 'react'
 import { useShoppingCart } from 'use-shopping-cart'
 
+import { CartItem as CartItemType } from '@/@types/cart'
+import { ButtonContainer } from '@/styles/components/button'
 import {
 	CartBody,
 	CartContent,
@@ -12,26 +13,14 @@ import {
 	CartOverlay,
 } from '@/styles/components/cart'
 
-interface CartItems {
-	name: string
-	id: string
-	price: number
-	image: string
-	currency: string
-	quantity: number
-	value: number
-	price_data: unknown
-	product_data: unknown
-	formattedValue: string
-	formattedPrice: string
-}
+import CartItem from './cart-item'
 
 interface CartProps {
 	children: ReactNode
 }
 
 export default function Cart({ children }: CartProps) {
-	const [cartItems, setCartItems] = useState<CartItems[]>([])
+	const [cartItems, setCartItems] = useState<CartItemType[]>([])
 
 	const {
 		shouldDisplayCart,
@@ -39,9 +28,6 @@ export default function Cart({ children }: CartProps) {
 		cartDetails,
 		cartCount,
 		formattedTotalPrice,
-		removeItem,
-		incrementItem,
-		decrementItem,
 	} = useShoppingCart()
 
 	useEffect(() => {
@@ -70,41 +56,11 @@ export default function Cart({ children }: CartProps) {
 
 					<CartBody>
 						{cartItems.map((item) => (
-							<p key={item.id}>
-								<Image
-									src={item.image}
-									width={320}
-									height={320}
-									alt={item.name}
-								/>
-								{item.name} ({item.quantity})
-								<br />
-								Unidade: {item.formattedPrice}
-								Subtotal: {item.formattedValue}
-								<br />
-								<button type="button" onClick={() => removeItem(item.id)}>
-									Remover
-								</button>
-								<button
-									type="button"
-									onClick={() => decrementItem(item.id)}
-									disabled={item.quantity === 1}
-								>
-									Menos
-								</button>
-								<button
-									type="button"
-									onClick={() => incrementItem(item.id)}
-									disabled={item.quantity > 4}
-								>
-									Mais
-								</button>
-								<br />
-							</p>
+							<CartItem product={item} key={item.id} />
 						))}
 					</CartBody>
 
-					<CartFooter>
+					<CartFooter hidden={cartItems.length === 0}>
 						<p>
 							<span>Quantidade</span>
 							<span>{cartCount && cartCount > 0 ? cartCount : 'Nenhum'}</span>
@@ -115,7 +71,7 @@ export default function Cart({ children }: CartProps) {
 							<span>{formattedTotalPrice}</span>
 						</p>
 
-						<button type="button">Finalizar compra</button>
+						<ButtonContainer type="button">Finalizar compra</ButtonContainer>
 					</CartFooter>
 				</CartContent>
 			</Dialog.Portal>
