@@ -1,46 +1,68 @@
-import axios from 'axios'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import Stripe from 'stripe'
+import { useShoppingCart } from 'use-shopping-cart'
 
-import { Product } from '@/@types/product'
+import { Product, ProductCart } from '@/@types/product'
 import { stripe } from '@/lib/stripe'
 import {
 	ImageContainer,
+	ProductButton,
 	ProductContainer,
 	ProductDetails,
 } from '@/styles/pages/product'
 
 interface ProductProps {
 	product: Product
+	productCart: ProductCart
 }
 
-export default function Product({ product }: ProductProps) {
+export default function Product({ product, productCart }: ProductProps) {
 	const router = useRouter()
 
-	const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-		useState(false)
+	const { handleCartClick, cartDetails } = useShoppingCart()
 
-	async function handleBuyProduct() {
-		try {
-			setIsCreatingCheckoutSession(true)
+	const [isAddingProductToCart, setIsAddingProductToCart] = useState(false)
 
-			const response = await axios.post('/api/checkout', {
-				priceID: product?.defaultPriceId,
-			})
+	// const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
+	// 	useState(false)
 
-			const { checkoutURL } = response.data
+	// async function handleBuyProduct() {
+	// 	try {
+	// 		setIsCreatingCheckoutSession(true)
 
-			window.location.href = checkoutURL
-		} catch (err) {
-			// Conectar com uma ferramenta de observalidade > Sentry / Datalog
-			alert('Falha ao direcionar para o checkout.')
-			setIsCreatingCheckoutSession(false)
-		}
+	// 		const response = await axios.post('/api/checkout', {
+	// 			priceID: product?.defaultPriceId,
+	// 		})
+
+	// 		const { checkoutURL } = response.data
+
+	// 		window.location.href = checkoutURL
+	// 	} catch (err) {
+	// 		// Conectar com uma ferramenta de observalidade > Sentry / Datalog
+	// 		alert('Falha ao direcionar para o checkout.')
+	// 		setIsCreatingCheckoutSession(false)
+	// 	}
+	// }
+
+	const { addItem } = useShoppingCart()
+
+	const handleAddProductToCart = () => {
+		setIsAddingProductToCart(true)
+		// @ts-expect-error wrong types
+		addItem(productCart)
+
+		setTimeout(() => {
+			handleCartClick()
+			setIsAddingProductToCart(false)
+		}, 1000)
 	}
+
+	const hasLimitCartItems =
+		cartDetails && cartDetails[product.id]?.quantity >= 5
 
 	if (router.isFallback) {
 		return (
@@ -76,13 +98,19 @@ export default function Product({ product }: ProductProps) {
 					<span>{product.price}</span>
 					{product.description && <p>{product.description}</p>}
 
-					<button
-						type="button"
-						onClick={handleBuyProduct}
-						disabled={isCreatingCheckoutSession}
-					>
-						Colocar na sacola
-					</button>
+					<ProductButton>
+						{hasLimitCartItems && (
+							<small>Quantidade máxima de itens na sacola atingido.</small>
+						)}
+
+						<button
+							type="button"
+							onClick={handleAddProductToCart}
+							disabled={isAddingProductToCart || hasLimitCartItems}
+						>
+							Adicionar à sacola
+						</button>
+					</ProductButton>
 				</ProductDetails>
 			</ProductContainer>
 		</>
@@ -133,6 +161,15 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
 				imageUrl: product.images[0],
 				price: priceFormated,
 				defaultPriceId: price.id,
+			},
+			productCart: {
+				id: product.id,
+				name: product.name,
+				description: product.description,
+				image: product.images[0],
+				price: price.unit_amount,
+				defaultPriceId: price.id,
+				currency: price.currency,
 			},
 		},
 		revalidate: 60 * 60 * 1, // 1h

@@ -87,9 +87,26 @@ export const ProductDetails = styled('div', {
 			margin: '2rem 0',
 		},
 	},
+})
+
+export const ProductButton = styled('div', {
+	marginTop: 'auto',
+	display: 'flex',
+	flexDirection: 'column',
+
+	small: {
+		display: 'block',
+		textAlign: 'center',
+		fontSize: '1rem',
+		fontStyle: 'italic',
+		border: '1px solid $gray700',
+		borderRadius: 8,
+		padding: '1rem',
+		color: '$gray600',
+		marginBottom: '1rem',
+	},
 
 	button: {
-		marginTop: 'auto',
 		background: '$green500',
 		border: 0,
 		color: '$white',

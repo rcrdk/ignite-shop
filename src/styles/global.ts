@@ -30,4 +30,25 @@ export const globalStyles = globalCss({
 		'0%, 100%': { opacity: 1 },
 		'50%': { opacity: 0.5 },
 	},
+
+	// '@keyframes overlayShow': {
+	// 	from: { opacity: '0' },
+	// 	to: { opacity: '0.66' },
+	// },
+
+	// '@keyframes overlayHide': {
+	// 	from: { opacity: '0.66' },
+	// 	to: { opacity: '1' },
+	// },
+
+	// '@keyframes contentShow': {
+	// 	from: {
+	// 		opacity: '0',
+	// 		transform: 'translate(100%, 0)',
+	// 	},
+	// 	to: {
+	// 		opacity: '1',
+	// 		transform: 'translate(0, 0)',
+	// 	},
+	// },
 })

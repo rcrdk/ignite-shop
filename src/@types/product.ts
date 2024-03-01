@@ -6,3 +6,14 @@ export interface Product {
 	price: string
 	defaultPriceId: string
 }
+
+export interface ProductCart {
+	id: string
+	name: string
+	description?: string
+	image: string
+	price: number | null
+	defaultPriceId: string
+	currency: string
+	sku: unknown
+}
