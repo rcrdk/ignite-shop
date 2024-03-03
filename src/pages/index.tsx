@@ -1,10 +1,10 @@
 import 'swiper/css'
 import 'swiper/css/scrollbar'
 
+import { Bag } from '@phosphor-icons/react'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { Bag } from 'phosphor-react'
 import Stripe from 'stripe'
 import { Mousewheel, Scrollbar } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'

@@ -1,13 +1,16 @@
+import { Broom, X } from '@phosphor-icons/react'
 import * as Dialog from '@radix-ui/react-dialog'
-import { X } from 'phosphor-react'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { useShoppingCart } from 'use-shopping-cart'
 
 import { CartItem as CartItemType } from '@/@types/cart'
 import { ButtonContainer } from '@/styles/components/button'
 import {
 	CartBody,
+	CartClear,
+	CartClose,
 	CartContent,
+	CartEmpty,
 	CartFooter,
 	CartHeader,
 	CartOverlay,
@@ -26,8 +29,9 @@ export default function Cart({ children }: CartProps) {
 		shouldDisplayCart,
 		handleCartClick,
 		cartDetails,
-		cartCount,
+		cartCount = 0,
 		formattedTotalPrice,
+		clearCart,
 	} = useShoppingCart()
 
 	useEffect(() => {
@@ -36,6 +40,15 @@ export default function Cart({ children }: CartProps) {
 		// @ts-expect-error wrong types
 		setCartItems([...items])
 	}, [cartDetails])
+
+	const handleCartClear = useCallback(() => {
+		const dialogConfirmation = confirm('Deseja mesmo esvaziar sua sacola?')
+
+		if (dialogConfirmation) clearCart()
+	}, [clearCart])
+
+	const hasCartItens = cartItems.length > 0
+	const hasNotCartItens = cartItems.length === 0
 
 	return (
 		<Dialog.Root open={shouldDisplayCart} onOpenChange={handleCartClick}>
@@ -47,23 +60,48 @@ export default function Cart({ children }: CartProps) {
 				<CartContent>
 					<CartHeader>
 						<h5>Sacola de compras</h5>
-						<Dialog.Close asChild>
+
+						{cartCount > 0 && (
+							<CartClear
+								type="button"
+								onClick={handleCartClear}
+								title="Esvaziar sacola"
+							>
+								<Broom weight="bold" />
+							</CartClear>
+						)}
+
+						<CartClose title="Fechar sacola" asChild>
 							<button type="button">
 								<X weight="bold" />
 							</button>
-						</Dialog.Close>
+						</CartClose>
 					</CartHeader>
 
-					<CartBody>
-						{cartItems.map((item) => (
-							<CartItem product={item} key={item.id} />
-						))}
-					</CartBody>
+					{hasNotCartItens && (
+						<CartEmpty>
+							{/* <Bag size={96} /> */}
+							<h5>Sua sacola está vazia</h5>
+							<Dialog.Close asChild>
+								<ButtonContainer type="button">
+									Começe a comprar
+								</ButtonContainer>
+							</Dialog.Close>
+						</CartEmpty>
+					)}
+
+					{hasCartItens && (
+						<CartBody>
+							{cartItems.map((item) => (
+								<CartItem product={item} key={item.id} />
+							))}
+						</CartBody>
+					)}
 
 					<CartFooter hidden={cartItems.length === 0}>
 						<p>
 							<span>Quantidade</span>
-							<span>{cartCount && cartCount > 0 ? cartCount : 'Nenhum'}</span>
+							<span>{cartCount === 1 ? '1 item' : `${cartCount} itens`}</span>
 						</p>
 
 						<p>

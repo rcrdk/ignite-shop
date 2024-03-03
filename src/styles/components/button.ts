@@ -10,7 +10,7 @@ export const ButtonContainer = styled('button', {
 	fontWeight: 'bold',
 	fontSize: '$md',
 	userSelect: 'none',
-	transition: 'background 300ms ease',
+	transition: 'background 300ms ease, box-shadow 200ms ease',
 
 	'&:not(:disabled):hover': {
 		background: '$green300',
@@ -18,6 +18,6 @@ export const ButtonContainer = styled('button', {
 
 	'&:disabled': {
 		opacity: '0.6',
-		cursor: 'wait',
+		// cursor: 'wait',
 	},
 })

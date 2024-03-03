@@ -67,6 +67,8 @@ export const Product = styled(Link, {
 	justifyContent: 'center',
 	overflow: 'hidden',
 	userSelect: 'none',
+	marginTop: '.4rem',
+	transition: 'box-shadow 200ms ease',
 
 	'@media(max-width:575px)': {
 		aspectRatio: '3/4',
@@ -89,7 +91,7 @@ export const Product = styled(Link, {
 		padding: '1.75rem 2rem',
 		transform: 'translateY(110%)',
 		opacity: 0,
-		transition: 'all 200ms ease-in-out',
+		transition: 'all 300ms ease-in-out',
 
 		// '@media(hover:none)': {
 		// 	opacity: 1,

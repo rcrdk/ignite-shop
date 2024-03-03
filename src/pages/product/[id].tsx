@@ -56,10 +56,8 @@ export default function Product({ product, productCart }: ProductProps) {
 		// @ts-expect-error wrong types
 		addItem(productCart)
 
-		setTimeout(() => {
-			handleCartClick()
-			setIsAddingProductToCart(false)
-		}, 1000)
+		handleCartClick()
+		setIsAddingProductToCart(false)
 	}
 
 	const hasLimitCartItems =

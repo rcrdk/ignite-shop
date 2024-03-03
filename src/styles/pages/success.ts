@@ -31,6 +31,8 @@ export const SuccessButton = styled(Link, {
 	fontSize: '$lg',
 	textDecoration: 'none',
 	fontWeight: 'bold',
+	transition: 'color 300ms ease, box-shadow 200ms ease',
+
 	'&:hover': {
 		color: '$green300',
 	},
@@ -76,6 +78,7 @@ export const ImageItem = styled('div', {
 
 	a: {
 		display: 'block',
+		transition: 'box-shadow 200ms ease',
 	},
 
 	img: {

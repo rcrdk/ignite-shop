@@ -15,6 +15,8 @@ export const HeaderContainer = styled('header', {
 
 export const Brand = styled(Link, {
 	display: 'block',
+	borderRadius: 8,
+	transition: 'box-shadow 200ms ease',
 
 	'@media(max-width:575px)': {
 		width: 110,
@@ -37,7 +39,7 @@ export const CartToggle = styled('button', {
 	border: 0,
 	borderRadius: 8,
 	cursor: 'pointer',
-	transition: 'background 300ms ease',
+	transition: 'background 300ms ease, box-shadow 200ms ease',
 
 	'&:hover': {
 		background: '$gray700',

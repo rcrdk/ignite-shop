@@ -1,5 +1,6 @@
+import { Minus, Plus, Trash } from '@phosphor-icons/react'
 import Image from 'next/image'
-import { Minus, Plus, Trash } from 'phosphor-react'
+import { useCallback } from 'react'
 import { useShoppingCart } from 'use-shopping-cart'
 
 import { CartItem } from '@/@types/cart'
@@ -7,6 +8,7 @@ import {
 	CartItemBody,
 	CartItemContainer,
 	CartItemImage,
+	CartItemInfo,
 	CartItemPlusMinusButton,
 } from '@/styles/components/cart-item'
 
@@ -16,6 +18,14 @@ interface CartItemProps {
 
 export default function CartItem({ product }: CartItemProps) {
 	const { removeItem, incrementItem, decrementItem } = useShoppingCart()
+
+	const handleRemoveItem = useCallback(() => {
+		const dialogConfirmation = confirm(
+			'Deseja mesmo remover este produto da sacola?',
+		)
+
+		if (dialogConfirmation) removeItem(product.id)
+	}, [removeItem, product])
 
 	return (
 		<CartItemContainer>
@@ -27,19 +37,21 @@ export default function CartItem({ product }: CartItemProps) {
 					alt={product.name}
 				/>
 
-				<button
-					type="button"
-					onClick={() => removeItem(product.id)}
-					title="Remover"
-				>
+				<button type="button" onClick={handleRemoveItem} title="Remover">
 					<Trash weight="bold" />
 				</button>
 			</CartItemImage>
 
 			<CartItemBody>
 				<strong>{product.name}</strong>
-				<p>
-					{product.formattedPrice} • <span>{product.quantity} un.</span>
+
+				<div>
+					<CartItemInfo>{product.formattedPrice}</CartItemInfo>
+
+					<span>|</span>
+
+					<CartItemInfo>{product.quantity} un.</CartItemInfo>
+
 					<CartItemPlusMinusButton
 						type="button"
 						onClick={() => decrementItem(product.id)}
@@ -48,6 +60,7 @@ export default function CartItem({ product }: CartItemProps) {
 					>
 						<Minus weight="bold" />
 					</CartItemPlusMinusButton>
+
 					<CartItemPlusMinusButton
 						type="button"
 						onClick={() => incrementItem(product.id)}
@@ -56,7 +69,7 @@ export default function CartItem({ product }: CartItemProps) {
 					>
 						<Plus weight="bold" />
 					</CartItemPlusMinusButton>
-				</p>
+				</div>
 			</CartItemBody>
 
 			<p>{product.formattedValue}</p>

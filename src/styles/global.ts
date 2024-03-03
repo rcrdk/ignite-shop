@@ -7,10 +7,27 @@ export const globalStyles = globalCss({
 		boxSizing: 'border-box',
 	},
 
+	':focus': {
+		outline: 'none',
+	},
+
+	':focus-visible': {
+		boxShadow:
+			'0 0 0 2px var(--colors-gray900), 0 0 0 4px var(--colors-green500)',
+	},
+
 	body: {
 		'-webkit-font-smoothing': 'antialiased',
 		backgroundColor: '$gray900',
 		color: '$gray100',
+
+		'&[data-scroll-locked]': {
+			userSelect: 'none',
+
+			'[data-state="open"]': {
+				userSelect: 'auto',
+			},
+		},
 	},
 
 	'body, input, textarea, button': {
