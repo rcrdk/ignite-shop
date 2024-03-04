@@ -70,6 +70,10 @@ export const Product = styled(Link, {
 	marginTop: '.4rem',
 	transition: 'box-shadow 200ms ease',
 
+	'@media(min-width:576px) and (max-height:800px)': {
+		maxHeight: 500,
+	},
+
 	'@media(max-width:575px)': {
 		aspectRatio: '3/4',
 	},
@@ -77,7 +81,7 @@ export const Product = styled(Link, {
 	img: {
 		objectFit: 'contain',
 		width: '100%',
-		height: '100%',
+		// height: '100%',
 	},
 
 	footer: {
@@ -93,10 +97,10 @@ export const Product = styled(Link, {
 		opacity: 0,
 		transition: 'all 300ms ease-in-out',
 
-		// '@media(hover:none)': {
-		// 	opacity: 1,
-		// 	transform: 'translateY(0)',
-		// },
+		'@media(hover:none)': {
+			opacity: 1,
+			transform: 'translateY(0)',
+		},
 
 		'@media(max-width:575px)': {
 			padding: '1.25rem 1.25rem 1.25rem 1.5rem',

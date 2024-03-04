@@ -3,6 +3,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import axios from 'axios'
 import { ReactNode, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import { animated, config, useTransition } from 'react-spring'
 import { useShoppingCart } from 'use-shopping-cart'
 
 import { CartItem as CartItemType } from '@/@types/cart'
@@ -34,9 +35,16 @@ export default function Cart({ children }: CartProps) {
 		handleCartClick,
 		cartDetails,
 		cartCount = 0,
-		formattedTotalPrice,
+		totalPrice = 0,
 		clearCart,
 	} = useShoppingCart()
+
+	const transitions = useTransition(shouldDisplayCart, {
+		from: { opacity: 0, x: 55 },
+		enter: { opacity: 1, x: 0 },
+		leave: { opacity: 0, x: 75 },
+		config: config.stiff,
+	})
 
 	useEffect(() => {
 		const items = Object.values(cartDetails || {})
@@ -82,69 +90,90 @@ export default function Cart({ children }: CartProps) {
 			<Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
 			<Dialog.Portal>
-				<CartOverlay />
+				{transitions((styles, item) =>
+					item ? (
+						<>
+							<CartOverlay forceMount asChild>
+								<animated.div
+									style={{
+										opacity: styles.opacity,
+									}}
+								/>
+							</CartOverlay>
 
-				<CartContent>
-					<CartHeader>
-						<h5>Sacola de compras</h5>
+							<CartContent forceMount asChild>
+								<animated.div style={styles}>
+									<CartHeader>
+										<h5>Sacola de compras</h5>
 
-						{cartCount > 0 && (
-							<CartClear
-								type="button"
-								onClick={handleCartClear}
-								title="Esvaziar sacola"
-							>
-								<Broom weight="bold" />
-							</CartClear>
-						)}
+										{cartCount > 0 && (
+											<CartClear
+												type="button"
+												onClick={handleCartClear}
+												title="Esvaziar sacola"
+											>
+												<Broom weight="bold" />
+											</CartClear>
+										)}
 
-						<CartClose title="Fechar sacola" asChild>
-							<button type="button">
-								<X weight="bold" />
-							</button>
-						</CartClose>
-					</CartHeader>
+										<CartClose title="Fechar sacola" asChild>
+											<button type="button">
+												<X weight="bold" />
+											</button>
+										</CartClose>
+									</CartHeader>
 
-					{hasNotCartItens && (
-						<CartEmpty>
-							<Bag size={96} />
-							<h5>Sua sacola está vazia</h5>
-							<Dialog.Close asChild>
-								<ButtonContainer type="button">
-									Começe a comprar
-								</ButtonContainer>
-							</Dialog.Close>
-						</CartEmpty>
-					)}
+									{hasNotCartItens && (
+										<CartEmpty>
+											<Bag size={96} />
+											<h5>Sua sacola está vazia</h5>
+											<Dialog.Close asChild>
+												<ButtonContainer type="button">
+													Começe a comprar
+												</ButtonContainer>
+											</Dialog.Close>
+										</CartEmpty>
+									)}
 
-					{hasCartItens && (
-						<CartBody>
-							{cartItems.map((item) => (
-								<CartItem product={item} key={item.id} />
-							))}
-						</CartBody>
-					)}
+									{hasCartItens && (
+										<CartBody>
+											{cartItems.map((item) => (
+												<CartItem product={item} key={item.id} />
+											))}
+										</CartBody>
+									)}
 
-					<CartFooter hidden={cartItems.length === 0}>
-						<p>
-							<span>Quantidade</span>
-							<span>{cartCount === 1 ? '1 item' : `${cartCount} itens`}</span>
-						</p>
+									<CartFooter hidden={cartItems.length === 0}>
+										<p>
+											<span>Quantidade</span>
+											<span>
+												{cartCount === 1 ? '1 item' : `${cartCount} itens`}
+											</span>
+										</p>
 
-						<p>
-							<span>Total</span>
-							<span>{formattedTotalPrice}</span>
-						</p>
+										<p>
+											<span>Total</span>
+											<span>
+												{(totalPrice / 100).toLocaleString('pt-BR', {
+													style: 'currency',
+													currency: 'BRL',
+												})}
+											</span>
+										</p>
 
-						<ButtonContainer
-							type="button"
-							disabled={hasNotCartItens || isCreatingCheckoutSession}
-							onClick={handleBuyProducts}
-						>
-							Finalizar compra
-						</ButtonContainer>
-					</CartFooter>
-				</CartContent>
+										<ButtonContainer
+											type="button"
+											disabled={hasNotCartItens || isCreatingCheckoutSession}
+											onClick={handleBuyProducts}
+										>
+											Finalizar compra
+										</ButtonContainer>
+									</CartFooter>
+								</animated.div>
+							</CartContent>
+						</>
+					) : null,
+				)}
 			</Dialog.Portal>
 		</Dialog.Root>
 	)

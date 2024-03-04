@@ -5,20 +5,12 @@ export const CartOverlay = styled(Overlay, {
 	position: 'fixed',
 	inset: 0,
 	zIndex: 99,
-	background: '$gray700',
-	opacity: '0.66',
+	// background: '$gray700',
+	background: 'rgb(44 44 50 / 66%)',
 
 	'@media(max-width:575px)': {
 		opacity: '.75',
 	},
-
-	// '&[data-state="open"]': {
-	// 	animation: 'overlayShow 500ms cubic-bezier(0.16, 1, 0.3, 1)',
-	// },
-
-	// '&[data-state="closed"]': {
-	// 	animation: 'overlayHide 500ms cubic-bezier(0.16, 1, 0.3, 1)',
-	// },
 })
 
 export const CartContent = styled(Content, {
@@ -32,7 +24,6 @@ export const CartContent = styled(Content, {
 	background: '$gray700',
 	overflow: 'auto',
 	boxShadow: '0 0 8rem rgb(0 0 0 / 66%)',
-	// animation: 'contentShow 500ms cubic-bezier(0.16, 1, 0.3, 1);',
 
 	':focus-visible': {
 		boxShadow:

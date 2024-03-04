@@ -68,7 +68,12 @@ export default function CartItem({ product }: CartItemProps) {
 
 					<span>|</span>
 
-					<CartItemInfo>{product.formattedValue}</CartItemInfo>
+					<CartItemInfo>
+						{(product.value / 100).toLocaleString('pt-BR', {
+							style: 'currency',
+							currency: 'BRL',
+						})}
+					</CartItemInfo>
 				</div>
 			</CartItemBody>
 		</CartItemContainer>

@@ -4,8 +4,12 @@ import { getCssText } from '@/styles'
 
 export default function Document() {
 	return (
-		<Html>
+		<Html lang="pt-br">
 			<Head>
+				{/* <meta
+					name="viewport"
+					content="width=device-width, initial-scale=1, shrink-to-fit=no"
+				/> */}
 				<link rel="preconnect" href="https://fonts.googleapis.com" />
 				<link
 					rel="preconnect"
@@ -21,6 +25,7 @@ export default function Document() {
 					id="stitches"
 					dangerouslySetInnerHTML={{ __html: getCssText() }}
 				/>
+				<meta name="theme-color" content="#00B37E" />
 			</Head>
 
 			<body>

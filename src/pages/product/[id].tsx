@@ -60,10 +60,12 @@ export default function Product({ product, productCart }: ProductProps) {
 		)
 	}
 
+	const pageTitle = `${product.name} • Ignite Shop`
+
 	return (
 		<>
 			<Head>
-				<title>{product.name} • Ignite Shop</title>
+				<title>{pageTitle}</title>
 			</Head>
 
 			<ProductContainer>

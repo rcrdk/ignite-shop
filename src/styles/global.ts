@@ -16,6 +16,10 @@ export const globalStyles = globalCss({
 			'0 0 0 2px var(--colors-gray900), 0 0 0 4px var(--colors-green500)',
 	},
 
+	html: {
+		textSizeAdjust: '100%',
+	},
+
 	body: {
 		'-webkit-font-smoothing': 'antialiased',
 		backgroundColor: '$gray900',
