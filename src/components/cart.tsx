@@ -1,6 +1,8 @@
-import { Broom, X } from '@phosphor-icons/react'
+import { Bag, Broom, X } from '@phosphor-icons/react'
 import * as Dialog from '@radix-ui/react-dialog'
+import axios from 'axios'
 import { ReactNode, useCallback, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { useShoppingCart } from 'use-shopping-cart'
 
 import { CartItem as CartItemType } from '@/@types/cart'
@@ -24,6 +26,8 @@ interface CartProps {
 
 export default function Cart({ children }: CartProps) {
 	const [cartItems, setCartItems] = useState<CartItemType[]>([])
+	const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
+		useState(false)
 
 	const {
 		shouldDisplayCart,
@@ -46,6 +50,29 @@ export default function Cart({ children }: CartProps) {
 
 		if (dialogConfirmation) clearCart()
 	}, [clearCart])
+
+	async function handleBuyProducts() {
+		try {
+			setIsCreatingCheckoutSession(true)
+
+			const response = await axios.post('/api/checkout', {
+				cartDetails,
+			})
+
+			const { checkoutURL } = response.data
+
+			window.location.href = checkoutURL
+		} catch (err) {
+			toast.error(
+				'Ocorreu um erro ao tentar finalizar seu pedido. Tente novamente.',
+				{
+					duration: 6000,
+				},
+			)
+			console.log(err)
+			setIsCreatingCheckoutSession(false)
+		}
+	}
 
 	const hasCartItens = cartItems.length > 0
 	const hasNotCartItens = cartItems.length === 0
@@ -80,7 +107,7 @@ export default function Cart({ children }: CartProps) {
 
 					{hasNotCartItens && (
 						<CartEmpty>
-							{/* <Bag size={96} /> */}
+							<Bag size={96} />
 							<h5>Sua sacola está vazia</h5>
 							<Dialog.Close asChild>
 								<ButtonContainer type="button">
@@ -109,7 +136,13 @@ export default function Cart({ children }: CartProps) {
 							<span>{formattedTotalPrice}</span>
 						</p>
 
-						<ButtonContainer type="button">Finalizar compra</ButtonContainer>
+						<ButtonContainer
+							type="button"
+							disabled={hasNotCartItens || isCreatingCheckoutSession}
+							onClick={handleBuyProducts}
+						>
+							Finalizar compra
+						</ButtonContainer>
 					</CartFooter>
 				</CartContent>
 			</Dialog.Portal>

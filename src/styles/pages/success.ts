@@ -25,7 +25,9 @@ export const SuccessContainer = styled('main', {
 })
 
 export const SuccessButton = styled(Link, {
-	marginTop: '5rem',
+	marginTop: '4rem',
+	padding: '1rem',
+	borderRadius: 8,
 	display: 'block',
 	color: '$green500',
 	fontSize: '$lg',
@@ -79,6 +81,7 @@ export const ImageItem = styled('div', {
 	a: {
 		display: 'block',
 		transition: 'box-shadow 200ms ease',
+		borderRadius: '50%',
 	},
 
 	img: {

@@ -12,6 +12,11 @@ export const ButtonContainer = styled('button', {
 	userSelect: 'none',
 	transition: 'background 300ms ease, box-shadow 200ms ease',
 
+	'@media(max-width:575px)': {
+		fontSize: '1rem',
+		padding: '1rem 1.25rem',
+	},
+
 	'&:not(:disabled):hover': {
 		background: '$green300',
 	},

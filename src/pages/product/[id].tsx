@@ -28,32 +28,11 @@ export default function Product({ product, productCart }: ProductProps) {
 
 	const [isAddingProductToCart, setIsAddingProductToCart] = useState(false)
 
-	// const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-	// 	useState(false)
-
-	// async function handleBuyProduct() {
-	// 	try {
-	// 		setIsCreatingCheckoutSession(true)
-
-	// 		const response = await axios.post('/api/checkout', {
-	// 			priceID: product?.defaultPriceId,
-	// 		})
-
-	// 		const { checkoutURL } = response.data
-
-	// 		window.location.href = checkoutURL
-	// 	} catch (err) {
-	// 		// Conectar com uma ferramenta de observalidade > Sentry / Datalog
-	// 		alert('Falha ao direcionar para o checkout.')
-	// 		setIsCreatingCheckoutSession(false)
-	// 	}
-	// }
-
 	const { addItem } = useShoppingCart()
 
 	const handleAddProductToCart = () => {
 		setIsAddingProductToCart(true)
-		// @ts-expect-error wrong types
+		// @ts-expect-error conflit between package and app types
 		addItem(productCart)
 
 		handleCartClick()

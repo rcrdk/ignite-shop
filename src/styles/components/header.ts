@@ -60,10 +60,6 @@ export const CartToggle = styled('button', {
 			height: '3rem',
 			padding: '0.5rem',
 		},
-
-		'rect,path': {
-			strokeWidth: '16',
-		},
 	},
 
 	span: {

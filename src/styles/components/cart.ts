@@ -8,6 +8,10 @@ export const CartOverlay = styled(Overlay, {
 	background: '$gray700',
 	opacity: '0.66',
 
+	'@media(max-width:575px)': {
+		opacity: '.75',
+	},
+
 	// '&[data-state="open"]': {
 	// 	animation: 'overlayShow 500ms cubic-bezier(0.16, 1, 0.3, 1)',
 	// },
@@ -25,7 +29,6 @@ export const CartContent = styled(Content, {
 	inset: '0 0 auto auto',
 	height: '100%',
 	width: 500,
-	maxWidth: '81vw',
 	background: '$gray700',
 	overflow: 'auto',
 	boxShadow: '0 0 8rem rgb(0 0 0 / 66%)',
@@ -34,6 +37,13 @@ export const CartContent = styled(Content, {
 	':focus-visible': {
 		boxShadow:
 			'0 0 0 2px var(--colors-gray700), 0 0 0 4px var(--colors-green500)',
+	},
+
+	'@media(max-width:575px)': {
+		borderRadius: '8px 8px 0 0',
+		inset: '5rem 1rem 0 1rem',
+		width: 'calc(100% - 2rem)',
+		height: 'calc(100% - 5rem)',
 	},
 })
 
@@ -48,6 +58,10 @@ export const CartHeader = styled('header', {
 	background: '$gray700',
 	zIndex: 99,
 
+	'@media(max-width:575px)': {
+		padding: '1.25rem',
+	},
+
 	'&:before': {
 		content: '',
 		display: 'block',
@@ -55,6 +69,10 @@ export const CartHeader = styled('header', {
 		inset: '100% 0 auto 0',
 		height: '1rem',
 		background: 'linear-gradient(to bottom, $gray700, rgb(0 0 0 / 0%))',
+
+		'@media(max-width:575px)': {
+			height: '.75rem',
+		},
 	},
 
 	h5: {
@@ -64,6 +82,10 @@ export const CartHeader = styled('header', {
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'space-between',
+
+		'@media(max-width:575px)': {
+			fontSize: '$lg',
+		},
 	},
 })
 
@@ -115,6 +137,11 @@ export const CartFooter = styled('footer', {
 	background: '$gray700',
 	zIndex: 100,
 
+	'@media(max-width:575px)': {
+		gap: '.75rem',
+		padding: '1.25rem',
+	},
+
 	'&:before': {
 		content: '',
 		display: 'block',
@@ -145,12 +172,20 @@ export const CartFooter = styled('footer', {
 
 	button: {
 		marginTop: '1.5rem',
+
+		'@media(max-width:575px)': {
+			marginTop: 0,
+		},
 	},
 })
 
 export const CartBody = styled('div', {
 	flex: 1,
 	padding: '1.5rem',
+
+	'@media(max-width:575px)': {
+		padding: '1.25rem',
+	},
 })
 
 export const CartEmpty = styled('div', {
@@ -162,8 +197,13 @@ export const CartEmpty = styled('div', {
 	alignItems: 'center',
 	justifyContent: 'center',
 
+	'@media(max-width:575px)': {
+		padding: '1.25rem',
+	},
+
 	svg: {
-		color: '$gray800',
+		color: '$gray600',
+		opacity: '.5',
 	},
 
 	h5: {

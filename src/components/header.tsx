@@ -28,7 +28,7 @@ export function Header() {
 				<Cart>
 					<CartToggle title="Sacola de compras">
 						{cartCount > 0 && <span>{cartCount}</span>}
-						<Bag weight="bold" />
+						<Bag />
 					</CartToggle>
 				</Cart>
 			)}

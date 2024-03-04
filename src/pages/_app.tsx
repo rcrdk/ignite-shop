@@ -1,4 +1,5 @@
 import { AppProps } from 'next/app'
+import { Toaster } from 'react-hot-toast'
 import { CartProvider } from 'use-shopping-cart'
 
 import { Header } from '@/components/header'
@@ -18,6 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
 			>
 				<Header />
 				<Component {...pageProps} />
+				<Toaster />
 			</CartProvider>
 		</Container>
 	)

@@ -46,12 +46,6 @@ export default function CartItem({ product }: CartItemProps) {
 				<strong>{product.name}</strong>
 
 				<div>
-					<CartItemInfo>{product.formattedPrice}</CartItemInfo>
-
-					<span>|</span>
-
-					<CartItemInfo>{product.quantity} un.</CartItemInfo>
-
 					<CartItemPlusMinusButton
 						type="button"
 						onClick={() => decrementItem(product.id)}
@@ -61,6 +55,8 @@ export default function CartItem({ product }: CartItemProps) {
 						<Minus weight="bold" />
 					</CartItemPlusMinusButton>
 
+					<CartItemInfo>{product.quantity}</CartItemInfo>
+
 					<CartItemPlusMinusButton
 						type="button"
 						onClick={() => incrementItem(product.id)}
@@ -69,10 +65,12 @@ export default function CartItem({ product }: CartItemProps) {
 					>
 						<Plus weight="bold" />
 					</CartItemPlusMinusButton>
+
+					<span>|</span>
+
+					<CartItemInfo>{product.formattedValue}</CartItemInfo>
 				</div>
 			</CartItemBody>
-
-			<p>{product.formattedValue}</p>
 		</CartItemContainer>
 	)
 }

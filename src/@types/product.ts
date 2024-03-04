@@ -15,5 +15,4 @@ export interface ProductCart {
 	price: number | null
 	defaultPriceId: string
 	currency: string
-	sku: unknown
 }

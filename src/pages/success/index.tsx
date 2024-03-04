@@ -2,7 +2,9 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect } from 'react'
 import Stripe from 'stripe'
+import { useShoppingCart } from 'use-shopping-cart'
 
 import { stripe } from '@/lib/stripe'
 import {
@@ -21,9 +23,22 @@ interface SuccessProductsProps {
 interface SuccessProps {
 	customerName: string
 	products: SuccessProductsProps[]
+	productsQuantity: number
 }
 
-export default function Success({ customerName, products }: SuccessProps) {
+export default function Success({
+	customerName,
+	products,
+	productsQuantity,
+}: SuccessProps) {
+	const { cartDetails, clearCart } = useShoppingCart()
+
+	useEffect(() => {
+		const hasCartProducts = Object.entries(cartDetails || {}).length !== 0
+
+		if (hasCartProducts) clearCart()
+	}, [cartDetails, clearCart])
+
 	return (
 		<>
 			<Head>
@@ -53,17 +68,17 @@ export default function Success({ customerName, products }: SuccessProps) {
 					))}
 				</ImageContainer>
 
-				{products.length === 1 && (
+				{productsQuantity === 1 && (
 					<p>
 						Uhuul <strong>{customerName}</strong>, sua{' '}
 						<strong>{products[0].name}</strong> já está a caminho da sua casa.
 					</p>
 				)}
 
-				{products.length > 1 && (
+				{productsQuantity > 1 && (
 					<p>
 						Uhuul <strong>{customerName}</strong>, sua compra de{' '}
-						{products.length} camisetas já está a caminho da sua casa.
+						{productsQuantity} camisetas já está a caminho da sua casa.
 					</p>
 				)}
 
@@ -82,7 +97,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 		return {
 			// notFound: true,
 			redirect: {
-				destination: '/',
+				destination: '/?error=invalid_session_id',
 				permanent: false,
 			},
 		}
@@ -94,6 +109,13 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 		})
 	} catch (error) {
 		console.error(error)
+
+		return {
+			redirect: {
+				destination: '/?error=retrieve_session',
+				permanent: true,
+			},
+		}
 	}
 
 	if (!response) {
@@ -102,6 +124,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 		}
 	}
 
+	const productsQuantity = response.line_items?.data.reduce(
+		(previous, current) => {
+			return previous + (current.quantity || 0)
+		},
+		0,
+	)
 	const customerName = response.customer_details?.name
 
 	response.line_items?.data.map((item) => {
@@ -118,6 +146,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 		props: {
 			customerName,
 			products,
+			productsQuantity,
 		},
 	}
 }

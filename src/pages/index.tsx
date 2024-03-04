@@ -5,6 +5,10 @@ import { Bag } from '@phosphor-icons/react'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import toast from 'react-hot-toast'
 import Stripe from 'stripe'
 import { Mousewheel, Scrollbar } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -18,6 +22,33 @@ interface HomeProps {
 }
 
 export default function Home({ products }: HomeProps) {
+	const urlParams = useSearchParams()
+	const router = useRouter()
+
+	useEffect(() => {
+		const hasInvalidSessionId =
+			urlParams.get('error') && urlParams.get('error') === 'invalid_session_id'
+
+		const hasNotRetrieveSession =
+			urlParams.get('error') && urlParams.get('error') === 'retrieve_session'
+
+		if (hasInvalidSessionId) {
+			toast.error('Sessão de checkout inválida.', {
+				duration: 6000,
+			})
+
+			router.replace('/', undefined, { shallow: true })
+		}
+
+		if (hasNotRetrieveSession) {
+			toast.error('Erro ao busca por sessão.', {
+				duration: 6000,
+			})
+
+			router.replace('/', undefined, { shallow: true })
+		}
+	}, [urlParams, router])
+
 	return (
 		<>
 			<Head>
@@ -45,7 +76,7 @@ export default function Home({ products }: HomeProps) {
 										<span>{product.price}</span>
 									</div>
 
-									<Bag weight="bold" />
+									<Bag />
 								</footer>
 							</Product>
 						</SwiperSlide>
